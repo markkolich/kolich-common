@@ -46,11 +46,11 @@ public final class KolichDefaultDateTypeAdapter
 	
 	private final DateFormat format_;
 	
-	private KolichDefaultDateTypeAdapter(final DateFormat format) {
+	public KolichDefaultDateTypeAdapter(final DateFormat format) {
 		format_ = format;
 	}
 
-    private KolichDefaultDateTypeAdapter(final String datePattern) {
+	public KolichDefaultDateTypeAdapter(final String datePattern) {
     	this(new SimpleDateFormat(datePattern));
     	//format_.setTimeZone(new SimpleTimeZone(0, "GMT"));
     }

@@ -38,10 +38,8 @@ public abstract class KolichCommonEntity {
 	/**
 	 * Get a fresh {@link Gson} instance created using the default
 	 * {@link GsonBuilder}.
-	 * @return a new pre-configured instance to serialize or deserialize
-	 * a {@link TwitterFeedEntity}.
 	 */
-	public synchronized static final Gson getGsonInstance() {
+	public synchronized static final Gson getDefaultGsonInstance() {
 		if (builder__ == null) {
 			builder__ = getDefaultGsonBuilder();
 		}
