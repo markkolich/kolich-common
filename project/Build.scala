@@ -63,7 +63,7 @@ object Common extends Build {
       version := aVer,
       organization := aOrg,
       scalaVersion := "2.9.2",
-      javacOptions ++= Seq("-Xlint"),
+      javacOptions ++= Seq("-Xlint", "-g"),
       shellPrompt := {(state: State) => {"%s:%s> ".format(aName, aVer)}},
       // True to export the packaged JAR instead of just the compiled .class files.
       exportJars := true,
