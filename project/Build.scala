@@ -36,7 +36,7 @@ object Dependencies {
   private val gson = "com.google.code.gson" % "gson" % "2.2.2" % "compile"
   private val guava = "com.google.guava" % "guava" % "13.0" % "compile"
 
-  private val httpClient = "org.apache.httpcomponents" % "httpclient" % "4.2.1" % "compile"
+  private val httpClient = "org.apache.httpcomponents" % "httpclient" % "4.2.2" % "compile"
 
   private val commonsIo = "commons-io" % "commons-io" % "2.4" % "compile"
 
@@ -53,7 +53,7 @@ object Common extends Build {
   import Dependencies._
 
   private val aName = "kolich-common"
-  private val aVer = "0.0.3.1"
+  private val aVer = "0.0.3.2"
   private val aOrg = "com.kolich"
 
   lazy val common: Project = Project(
@@ -118,6 +118,11 @@ object Common extends Build {
       // JAR into a more meaningful location.
       artifactPath in (Compile, packageBin) ~= { defaultPath =>
         file("dist") / defaultPath.getName
+      },
+      // Override the default 'test:package' path used by SBT. Places the
+      // resulting JAR into a more meaningful location.
+      artifactPath in (Test, packageBin) ~= { defaultPath =>
+        file("dist") / "test" / defaultPath.getName
       },
       libraryDependencies ++= commonDeps,
       retrieveManaged := true) ++
