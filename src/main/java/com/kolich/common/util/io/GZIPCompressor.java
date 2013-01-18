@@ -24,7 +24,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.kolich.common.util;
+package com.kolich.common.util.io;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
