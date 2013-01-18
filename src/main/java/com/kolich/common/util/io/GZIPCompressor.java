@@ -26,6 +26,8 @@
 
 package com.kolich.common.util.io;
 
+import static org.apache.commons.io.IOUtils.closeQuietly;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -59,22 +61,22 @@ public final class GZIPCompressor {
 	 * @return
 	 */
 	public static final byte[] compress(final InputStream is,
-		final int size) {
+		final int outputBufferSize) {
 		GZIPOutputStream gzos = null;
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			gzos = new GZIPOutputStream(baos, size) {
+			gzos = new GZIPOutputStream(baos, outputBufferSize) {
 				// Ugly anonymous constructor hack to set the compression
 				// level on the underlying Deflater to "max compression".
 				{ def.setLevel(Deflater.BEST_COMPRESSION); }
 			};
-			IOUtils.copy(is, gzos);
+			IOUtils.copyLarge(is, gzos);
 			gzos.finish();
 			return baos.toByteArray();
 		} catch (Exception e) {
-			throw new KolichCommonException(e);
+			throw new GZIPCompressorException(e);
 		} finally {
-			IOUtils.closeQuietly(gzos);
+			closeQuietly(gzos);
 		}
 	}
 	
@@ -113,10 +115,10 @@ public final class GZIPCompressor {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			gzis = new GZIPInputStream(is, size);
-			IOUtils.copy(gzis, baos);
+			IOUtils.copyLarge(gzis, baos);
 			return baos.toByteArray();
 		} catch (Exception e) {
-			throw new KolichCommonException(e);
+			throw new GZIPCompressorException(e);
 		} finally {
 			IOUtils.closeQuietly(gzis);
 		}
@@ -140,6 +142,25 @@ public final class GZIPCompressor {
 	 */
 	public static final byte[] uncompress(final byte[] input) {
 		return uncompress(input, DEFAULT_BUFFER_SIZE);
+	}
+	
+	public static final class GZIPCompressorException
+		extends KolichCommonException {
+		
+		private static final long serialVersionUID = -3848061272831604919L;
+
+		public GZIPCompressorException(String message, Throwable cause) {
+			super(message, cause);
+		}
+		
+		public GZIPCompressorException(String message) {
+			super(message);
+		}
+		
+		public GZIPCompressorException(Throwable cause) {
+			super(cause);
+		}
+		
 	}
 
 }
