@@ -27,6 +27,7 @@
 package com.kolich.common.util.secure;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.Long.MAX_VALUE;
 import static java.security.MessageDigest.getInstance;
 import static org.apache.commons.codec.binary.Hex.encodeHex;
 import static org.apache.commons.codec.binary.StringUtils.getBytesUtf8;
@@ -39,23 +40,41 @@ import java.security.NoSuchAlgorithmException;
 
 import com.kolich.common.KolichCommonException;
 
-public class KolichChecksum {
-	
+public final class KolichChecksum {
+		
 	public static final String getSHA256Hash(final String input) {
 		checkNotNull(input, "Input string to hash cannot be null.");
 		return getSHA256Hash(getBytesUtf8(input));
 	}
 	
+	public static final String getSHA256Hash(final String input,
+		final long maxSize) {
+		checkNotNull(input, "Input string to hash cannot be null.");
+		return getSHA256Hash(getBytesUtf8(input), maxSize);
+	}
+	
 	public static final String getSHA256Hash(final byte[] input) {
 		checkNotNull(input, "Input byte[] array to hash cannot be null.");
-		return getSHA256HashAndCopy(new ByteArrayInputStream(input), null);
+		return getSHA256Hash(input, MAX_VALUE);
+	}
+	
+	public static final String getSHA256Hash(final byte[] input,
+		final long maxSize) {
+		checkNotNull(input, "Input byte[] array to hash cannot be null.");
+		return getSHA256HashAndCopy(new ByteArrayInputStream(input), null,
+			maxSize);
 	}
 	
 	public static final String getSHA256HashAndCopy(final InputStream is,
 		final OutputStream os) {
+		return getSHA256HashAndCopy(is, os, MAX_VALUE);
+	}
+	
+	public static final String getSHA256HashAndCopy(final InputStream is,
+		final OutputStream os, final long maxSize) {
 		checkNotNull(is, "Input stream to hash and copy cannot be null.");
 		try {
-			return getHashAndCopy(is, new SHA256StreamCopier(), os);
+			return getHashAndCopy(is, maxSize, new SHA256StreamCopier(), os);
 		} catch (Exception e) {
 			throw new KolichCommonException("Failed to SHA-256 hash and copy " +
 				"input stream.", e);
@@ -67,17 +86,30 @@ public class KolichChecksum {
 		return getSHA1Hash(getBytesUtf8(input));
 	}
 	
+	public static final String getSHA1Hash(final String input,
+		final long maxSize) {
+		checkNotNull(input, "Input string to hash cannot be null.");
+		return getSHA1Hash(getBytesUtf8(input), MAX_VALUE);
+	}
+	
 	public static final String getSHA1Hash(final byte[] input) {
 		checkNotNull(input, "Input byte[] array to hash cannot be null.");
-		return getSHA1HashAndCopy(new ByteArrayInputStream(input), null);
+		return getSHA1Hash(input, MAX_VALUE);
+	}
+	
+	public static final String getSHA1Hash(final byte[] input,
+		final long maxSize) {
+		checkNotNull(input, "Input byte[] array to hash cannot be null.");
+		return getSHA1HashAndCopy(new ByteArrayInputStream(input), null,
+			maxSize);
 	}
 	
 	public static final String getSHA1HashAndCopy(final InputStream is,
-		final OutputStream os) {
+		final OutputStream os, final long maxSize) {
 		checkNotNull(is, "Input stream to hash and copy cannot be null.");
 		checkNotNull(os, "Output stream to copy to cannot be null.");
 		try {
-			return getHashAndCopy(is, new SHA1StreamCopier(), os);
+			return getHashAndCopy(is, maxSize, new SHA1StreamCopier(), os);
 		} catch (Exception e) {
 			throw new KolichCommonException("Failed to SHA-1 hash and copy " +
 				"input stream.", e);
@@ -86,19 +118,42 @@ public class KolichChecksum {
 	
 	public static final String getMD5Hash(final String input) {
 		checkNotNull(input, "Input string to hash cannot be null.");
-		return getSHA1Hash(getBytesUtf8(input));
+		return getMD5Hash(getBytesUtf8(input));
+	}
+	
+	public static final String getMD5Hash(final String input,
+		final long maxSize) {
+		checkNotNull(input, "Input string to hash cannot be null.");
+		return getMD5Hash(getBytesUtf8(input), MAX_VALUE);
 	}
 	
 	public static final String getMD5Hash(final byte[] input) {
 		checkNotNull(input, "Input byte[] array to hash cannot be null.");
-		return getSHA1HashAndCopy(new ByteArrayInputStream(input), null);
+		return getMD5Hash(input, MAX_VALUE);
+	}
+	
+	public static final String getMD5Hash(final byte[] input,
+		final long maxSize) {
+		checkNotNull(input, "Input byte[] array to hash cannot be null.");
+		return getMD5HashAndCopy(new ByteArrayInputStream(input), null,
+			maxSize);
+	}
+	
+	public static final String getMD5Hash(final InputStream is,
+		final OutputStream os, final long maxSize) {
+		return getMD5HashAndCopy(is, os, maxSize);
+	}
+		
+	public static final String getMD5HashAndCopy(final InputStream is,
+		final OutputStream os) {
+		return getMD5HashAndCopy(is, os, MAX_VALUE);
 	}
 	
 	public static final String getMD5HashAndCopy(final InputStream is,
-		final OutputStream os) {
+		final OutputStream os, final long maxSize) {
 		checkNotNull(is, "Input stream to hash and copy cannot be null.");
 		try {
-			return getHashAndCopy(is, new MD5StreamCopier(), os);
+			return getHashAndCopy(is, maxSize, new MD5StreamCopier(), os);
 		} catch (Exception e) {
 			throw new KolichCommonException("Failed to MD5 hash and copy " +
 				"input stream.", e);
@@ -106,9 +161,10 @@ public class KolichChecksum {
 	}
 	
 	private static final String getHashAndCopy(final InputStream is,
-		final HavaloHashStreamCopier copier, final OutputStream os) {
+		final long maxSize, final HavaloHashStreamCopier copier,
+		final OutputStream os) {
 		try {
-			copy(is, copier,
+			copy(is, maxSize, copier,
 				// Only send the output stream if it's non-null.
 				(os != null) ? new OutputStreamCopier(os) : null);
 			// NOTE: We're using new String(...) here cuz encodeHex() returns
@@ -121,18 +177,27 @@ public class KolichChecksum {
 		}
 	}
 	
-	private static final void copy(final InputStream is,
+	private static final void copy(final InputStream is, final long maxSize,
 		final HavaloStreamCopier... copiers) {
+		long totalRead = 0L;
 		try {
 			final byte[] buffer = new byte[1048576]; // 1MB
 			int read = 0;
 		    while((read = is.read(buffer)) != -1) {
+		    	totalRead += read;
+		    	if(totalRead > maxSize) {
+		    		throw new KolichCommonException("Read more bytes than " +
+		    			"allowed (read=" + totalRead + ", max=" + maxSize +
+		    			")");
+		    	}
 		    	for(final HavaloStreamCopier copier : copiers) {
 		    		if(copier != null) {
 		    			copier.write(buffer, read);
 		    		}
 		    	}
 		    }
+		} catch (KolichCommonException e) {
+			throw e;
 		} catch (Exception e) {
 			throw new KolichCommonException(e);
 		}

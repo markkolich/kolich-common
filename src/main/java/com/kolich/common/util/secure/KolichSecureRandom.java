@@ -43,8 +43,8 @@ public final class KolichSecureRandom {
 	 */
 	private static final int DEFAULT_RANDOM_SIZE_BITS = 512;
 	
-	private SecureRandom random_;
-	private int size_;
+	private final SecureRandom random_;
+	private final int size_;
 	
 	public KolichSecureRandom(int randomSize) {
 		try {
