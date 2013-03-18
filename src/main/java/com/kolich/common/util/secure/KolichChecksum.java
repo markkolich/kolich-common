@@ -41,7 +41,7 @@ import java.security.NoSuchAlgorithmException;
 import com.kolich.common.KolichCommonException;
 
 public final class KolichChecksum {
-		
+	
 	public static final String getSHA256Hash(final String input) {
 		checkNotNull(input, "Input string to hash cannot be null.");
 		return getSHA256Hash(getBytesUtf8(input));
@@ -75,9 +75,8 @@ public final class KolichChecksum {
 		checkNotNull(is, "Input stream to hash and copy cannot be null.");
 		try {
 			return getHashAndCopy(is, maxSize, new SHA256StreamCopier(), os);
-		} catch (Exception e) {
-			throw new KolichCommonException("Failed to SHA-256 hash and copy " +
-				"input stream.", e);
+		} catch (NoSuchAlgorithmException e) {
+			throw new KolichChecksumException(e);
 		}
 	}
 	
@@ -115,9 +114,8 @@ public final class KolichChecksum {
 		checkNotNull(os, "Output stream to copy to cannot be null.");
 		try {
 			return getHashAndCopy(is, maxSize, new SHA1StreamCopier(), os);
-		} catch (Exception e) {
-			throw new KolichCommonException("Failed to SHA-1 hash and copy " +
-				"input stream.", e);
+		} catch (NoSuchAlgorithmException e) {
+			throw new KolichChecksumException(e);
 		}
 	}
 	
@@ -159,9 +157,8 @@ public final class KolichChecksum {
 		checkNotNull(is, "Input stream to hash and copy cannot be null.");
 		try {
 			return getHashAndCopy(is, maxSize, new MD5StreamCopier(), os);
-		} catch (Exception e) {
-			throw new KolichCommonException("Failed to MD5 hash and copy " +
-				"input stream.", e);
+		} catch (NoSuchAlgorithmException e) {
+			throw new KolichChecksumException(e);
 		}
 	}
 	
@@ -178,7 +175,7 @@ public final class KolichChecksum {
 			// is handled under-the-hood.
 			return new String(encodeHex(copier.digest()));
 		} catch (Exception e) {
-			throw new KolichCommonException(e);
+			throw new KolichChecksumException(e);
 		}
 	}
 	
@@ -191,7 +188,7 @@ public final class KolichChecksum {
 		    while((read = is.read(buffer)) != -1) {
 		    	totalRead += read;
 		    	if(totalRead > maxSize) {
-		    		throw new KolichCommonException("Read more bytes than " +
+		    		throw new KolichChecksumException("Read more bytes than " +
 		    			"allowed (read=" + totalRead + ", max=" + maxSize +
 		    			")");
 		    	}
@@ -201,10 +198,10 @@ public final class KolichChecksum {
 		    		}
 		    	}
 		    }
-		} catch (KolichCommonException e) {
+		} catch (KolichChecksumException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new KolichCommonException(e);
+			throw new KolichChecksumException(e);
 		}
 	}
 	
@@ -278,6 +275,30 @@ public final class KolichChecksum {
 		public void write(byte[] buffer, int read) throws Exception {
 			os_.write(buffer, 0, read);
 		}
+	}
+	
+	/**
+	 * Inline exception class for the string signer.
+	 * @author mark
+	 *
+	 */
+	public static final class KolichChecksumException
+		extends KolichCommonException {
+
+		private static final long serialVersionUID = 637154246811106216L;
+
+		public KolichChecksumException(String message, Throwable cause) {
+			super(message, cause);
+		}
+		
+		public KolichChecksumException(String message) {
+			super(message);
+		}
+		
+		public KolichChecksumException(Throwable cause) {
+			super(cause);
+		}
+		
 	}
 	
 }
