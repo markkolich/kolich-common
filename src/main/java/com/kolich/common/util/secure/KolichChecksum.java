@@ -105,6 +105,11 @@ public final class KolichChecksum {
 	}
 	
 	public static final String getSHA1HashAndCopy(final InputStream is,
+		final OutputStream os) {
+		return getSHA1HashAndCopy(is, os, MAX_VALUE);
+	}
+	
+	public static final String getSHA1HashAndCopy(final InputStream is,
 		final OutputStream os, final long maxSize) {
 		checkNotNull(is, "Input stream to hash and copy cannot be null.");
 		checkNotNull(os, "Output stream to copy to cannot be null.");
