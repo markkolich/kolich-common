@@ -47,6 +47,16 @@ public final class Base64Utils {
 	}
 	
 	/**
+	 * Encodes binary data using the base64 algorithm and returns
+	 * the result as a UTF-8 encoded String.
+	 * @param encode
+	 * @return A UTF-8 String representation of the encoded output.
+	 */
+	public static final String encodeBase64ToString(final byte[] encode) {
+		return newStringUtf8(encodeBase64(encode));
+	}
+	
+	/**
 	 * Encodes binary data using the base64 algorithm but
 	 * does not chunk the output.
 	 * @param encode
@@ -68,6 +78,17 @@ public final class Base64Utils {
 	}
 	
 	/**
+	 * Encodes binary data using the base64 algorithm but does not
+	 * chunk the output. The url-safe variation emits - and _ instead
+	 * of + and / characters.
+	 * @param encode
+	 * @return A UTF-8 String representation of the encoded output.
+	 */
+	public static final String encodeBase64URLSafeToString(final byte[] encode) {
+		return newStringUtf8(encodeBase64URLSafe(encode));
+	}
+	
+	/**
 	 * Encodes binary data using a URL-safe variation of the base64
 	 * algorithm but does not chunk the output. The url-safe variation
 	 * emits - and _ instead of + and / characters.
@@ -86,6 +107,16 @@ public final class Base64Utils {
 	 */
 	public static final String decodeBase64(final String decode) {
 		return newStringUtf8(decodeBase64(getBytesUtf8(decode)));
+	}
+	
+	/**
+	 * Decodes binary data using the base64 algorithm, and returns a UTF-8
+	 * encoded String.  Works with URL-safe encoded base64 Strings too.
+	 * @param encode
+	 * @return A UTF-8 String representation of the decoded output.
+	 */
+	public static final String decodeBase64ToString(final byte[] decode) {
+		return newStringUtf8(decodeBase64(decode));
 	}
 	
 	/**

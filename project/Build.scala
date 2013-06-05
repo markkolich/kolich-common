@@ -33,8 +33,8 @@ object Dependencies {
 
   private val slf4j = "org.slf4j" % "slf4j-api" % "1.7.2" % "compile"
 
-  private val gson = "com.google.code.gson" % "gson" % "2.2.2" % "compile"
-  private val guava = "com.google.guava" % "guava" % "14.0" % "compile"
+  private val gson = "com.google.code.gson" % "gson" % "2.2.4" % "compile"
+  private val guava = "com.google.guava" % "guava" % "14.0.1" % "compile"
 
   private val commonsIo = "commons-io" % "commons-io" % "2.4" % "compile"
   private val commonsCodec = "commons-codec" % "commons-codec" % "1.6" % "compile"
@@ -51,7 +51,7 @@ object Common extends Build {
   import Dependencies._
 
   private val aName = "kolich-common"
-  private val aVer = "0.0.8"
+  private val aVer = "0.0.9"
   private val aOrg = "com.kolich"
 
   lazy val common: Project = Project(
@@ -60,7 +60,7 @@ object Common extends Build {
     settings = Defaults.defaultSettings ++ Seq(
       version := aVer,
       organization := aOrg,
-      scalaVersion := "2.9.2",
+      scalaVersion := "2.10.1",
       javacOptions ++= Seq("-Xlint", "-g"),
       shellPrompt := {(state: State) => {"%s:%s> ".format(aName, aVer)}},
       // True to export the packaged JAR instead of just the compiled .class files.
