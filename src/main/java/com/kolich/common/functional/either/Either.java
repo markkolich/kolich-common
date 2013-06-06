@@ -24,33 +24,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.kolich.common.either;
+package com.kolich.common.functional.either;
 
-public final class Left<L,R> implements Either<L,R> {
+public interface Either<L,R> {
 	
-	public final L left_;
+	public boolean success();
 	
-	private Left(final L left) {
-		left_ = left;
-	}
+	public L left();
 	
-	@Override
-	public boolean success() {
-		return false;
-	}
-	
-	@Override
-	public L left() {
-		return left_;
-	}
-	
-	@Override
-	public R right() {
-		return null;
-	}
-	
-	public static final <L,R> Either<L,R> left(final L left) {
-		return new Left<L,R>(left);
-	}
-	
+	public R right();
+
 }

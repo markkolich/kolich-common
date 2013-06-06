@@ -24,26 +24,36 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.kolich.common;
+package com.kolich.common.functional.option;
 
-public class KolichCommonException extends RuntimeException {
+import com.kolich.common.functional.KolichFunctionalException;
 
-	private static final long serialVersionUID = 3344611767566651575L;
-	
-	public KolichCommonException(String message, Throwable cause) {
-		super(message, cause);
-    }
-	
-	public KolichCommonException(String message) {
-		super(message);
-    }
-	
-	public KolichCommonException(Throwable cause) {
-		super(cause);
-    }
-	
-	public KolichCommonException() {
-		super();
+public final class None<T> implements Option<T> {
+				
+	private None() {}
+
+	@Override
+	public boolean isSome() {
+		return false;
 	}
 
+	@Override
+	public boolean isNone() {
+		return true;
+	}
+	
+	@Override
+	public T get() {
+		throw new KolichFunctionalException("None.get");
+	}
+	
+	@Override
+	public T getOrElse(final T orElse) {
+		return orElse;
+	}
+	
+	public static final <T> Option<T> none() {
+		return new None<T>();
+	}
+	
 }

@@ -24,26 +24,33 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.kolich.common;
+package com.kolich.common.functional.either;
 
-public class KolichCommonException extends RuntimeException {
-
-	private static final long serialVersionUID = 3344611767566651575L;
+public final class Left<L,R> implements Either<L,R> {
 	
-	public KolichCommonException(String message, Throwable cause) {
-		super(message, cause);
-    }
+	public final L left_;
 	
-	public KolichCommonException(String message) {
-		super(message);
-    }
-	
-	public KolichCommonException(Throwable cause) {
-		super(cause);
-    }
-	
-	public KolichCommonException() {
-		super();
+	private Left(final L left) {
+		left_ = left;
 	}
-
+	
+	@Override
+	public boolean success() {
+		return false;
+	}
+	
+	@Override
+	public L left() {
+		return left_;
+	}
+	
+	@Override
+	public R right() {
+		return null;
+	}
+	
+	public static final <L,R> Either<L,R> left(final L left) {
+		return new Left<L,R>(left);
+	}
+	
 }

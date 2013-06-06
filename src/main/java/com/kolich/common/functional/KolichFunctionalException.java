@@ -24,14 +24,16 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.kolich.common.either;
+package com.kolich.common.functional;
 
-public interface Either<L,R> {
+import com.kolich.common.KolichCommonException;
+
+public final class KolichFunctionalException extends KolichCommonException {
+
+	private static final long serialVersionUID = -2178164724471101935L;
 	
-	public boolean success();
-	
-	public L left();
-	
-	public R right();
+	public KolichFunctionalException(String message) {
+		super(message);
+	}
 
 }

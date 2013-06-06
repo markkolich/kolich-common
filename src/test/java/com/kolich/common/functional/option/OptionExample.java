@@ -24,33 +24,29 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.kolich.common.either;
+package com.kolich.common.functional.option;
 
-public final class Right<L,R> implements Either<L,R> {
-	
-	public final R right_;
-	
-	private Right(final R right) {
-		right_ = right;
+import com.kolich.common.functional.KolichFunctionalException;
+
+public final class OptionExample {
+
+	public static void main(String[] args) {
+		
+		final Option<String> some = Some.some("foobar!");
+		if(some.isSome()) {
+			System.out.println("Yep, is Some: " + some.get());
+		}
+		
+		final Option<Integer> none = None.none();
+		try {
+			// Should obviously fail.
+			none.get();	
+		} catch (KolichFunctionalException e) {
+			System.out.println("Horray!.. get() on None failed as expected: " +
+				e.getMessage());
+			System.out.println("What about getOrElse()?.. " + none.getOrElse(2));
+		}
+		
 	}
-	
-	@Override
-	public boolean success() {
-		return true;
-	}
-	
-	@Override
-	public L left() {
-		return null;
-	}
-	
-	@Override
-	public R right() {
-		return right_;
-	}
-	
-	public static final <L,R> Either<L,R> right(final R right) {
-		return new Right<L,R>(right);
-	}
-	
+
 }

@@ -24,26 +24,38 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.kolich.common;
+package com.kolich.common.functional.option;
 
-public class KolichCommonException extends RuntimeException {
-
-	private static final long serialVersionUID = 3344611767566651575L;
+public final class Some<T> implements Option<T> {
 	
-	public KolichCommonException(String message, Throwable cause) {
-		super(message, cause);
-    }
+	private final T some_;
 	
-	public KolichCommonException(String message) {
-		super(message);
-    }
-	
-	public KolichCommonException(Throwable cause) {
-		super(cause);
-    }
-	
-	public KolichCommonException() {
-		super();
+	private Some(final T some) {
+		some_ = some;
 	}
 
+	@Override
+	public boolean isSome() {
+		return true;
+	}
+
+	@Override
+	public boolean isNone() {
+		return false;
+	}
+	
+	@Override
+	public T get() {
+		return some_;
+	}
+	
+	@Override
+	public T getOrElse(final T orElse) {
+		return get();
+	}
+	
+	public static final <T> Option<T> some(final T some) {
+		return new Some<T>(some);
+	}
+	
 }
