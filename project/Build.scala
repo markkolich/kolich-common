@@ -51,7 +51,7 @@ object Common extends Build {
   import Dependencies._
 
   private val aName = "kolich-common"
-  private val aVer = "0.0.9"
+  private val aVer = "0.1.0"
   private val aOrg = "com.kolich"
 
   lazy val common: Project = Project(
