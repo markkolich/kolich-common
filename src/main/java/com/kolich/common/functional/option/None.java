@@ -26,10 +26,13 @@
 
 package com.kolich.common.functional.option;
 
+import java.util.Collections;
+import java.util.Iterator;
+
 import com.kolich.common.functional.KolichFunctionalException;
 
 public final class None<T> implements Option<T> {
-				
+
 	private None() {}
 
 	@Override
@@ -54,6 +57,11 @@ public final class None<T> implements Option<T> {
 	
 	public static final <T> Option<T> none() {
 		return new None<T>();
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return Collections.<T>emptyList().iterator();
 	}
 	
 }

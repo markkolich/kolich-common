@@ -26,6 +26,9 @@
 
 package com.kolich.common.functional.option;
 
+import java.util.Collections;
+import java.util.Iterator;
+
 public final class Some<T> implements Option<T> {
 	
 	private final T some_;
@@ -56,6 +59,11 @@ public final class Some<T> implements Option<T> {
 	
 	public static final <T> Option<T> some(final T some) {
 		return new Some<T>(some);
+	}
+
+	@Override
+	public Iterator<T> iterator() {
+		return Collections.singletonList(some_).iterator();
 	}
 	
 }

@@ -26,7 +26,7 @@
 
 package com.kolich.common.functional.option;
 
-public interface Option<T> {
+public interface Option<T> extends Iterable<T> {
 	
 	public boolean isSome();
 	
