@@ -26,14 +26,23 @@
 
 package com.kolich.common.functional.option;
 
-public interface Option<T> extends Iterable<T> {
+public abstract class Option<T> implements Iterable<T> {
 	
-	public boolean isSome();
+	public abstract boolean isSome();
 	
-	public boolean isNone();
+	public abstract boolean isNone();
 	
-	public T get();
+	public abstract T get();
 	
-	public T getOrElse(final T orElse);
+	public abstract T getOrElse(final T orElse);
+	
+	/**
+	 * Returns a None&lt;T&gt; if the input parameter is null.
+	 * Otherwise, returns a Some&lt;T&gt; that contains the
+	 * input parameter.
+	 */
+	public static final <T> Option<T> toOption(final T t) {
+		return (t == null) ? None.<T>none() : Some.<T>some(t);
+	}
 	
 }

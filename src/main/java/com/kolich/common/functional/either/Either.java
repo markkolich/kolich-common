@@ -26,12 +26,12 @@
 
 package com.kolich.common.functional.either;
 
-public interface Either<L,R> {
+public abstract class Either<L,R> {
 	
-	public boolean success();
+	public abstract boolean success();
 	
-	public L left();
+	public abstract L left();
 	
-	public R right();
+	public abstract R right();
 
 }

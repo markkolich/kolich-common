@@ -26,7 +26,7 @@
 
 package com.kolich.common.functional.either;
 
-public final class Left<L,R> implements Either<L,R> {
+public final class Left<L,R> extends Either<L,R> {
 	
 	public final L left_;
 	

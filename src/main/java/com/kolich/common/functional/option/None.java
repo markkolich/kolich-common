@@ -31,7 +31,7 @@ import java.util.Iterator;
 
 import com.kolich.common.functional.KolichFunctionalException;
 
-public final class None<T> implements Option<T> {
+public final class None<T> extends Option<T> {
 
 	private None() {}
 
