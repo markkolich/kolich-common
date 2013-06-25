@@ -48,65 +48,98 @@ public abstract class RuntimeClosure<T> {
 	
 	public abstract T run(final Process process) throws Exception;
 	
-	public void success() throws Exception {
+	/**
+	 * Success callback, called only if and only if the {@link#run}
+	 * method completed without exception.  Default behavior is do
+	 * nothing, consumers should override in their closures as needed.
+	 * @param process the {@link Process} object associated with this
+	 * runtime operation. May be null.
+	 */
+	public void success(final Process process) throws Exception {
+		// Default, do nothing.
+	}
+	
+	/**
+	 * Post execution callback, called after the {@link#run} method
+	 * is complete, on success or failure.  This method is called even
+	 * if {@link#run} throws an exception.
+	 * @param process the {@link Process} object associated with this
+	 * runtime operation. May be null.
+	 */
+	public void after(final Process process) {
 		// Default, do nothing.
 	}
 			
 	public final Either<Exception,T> exec(final String command) {
+		Process p = null;
 		try {
-			return doit(runtime_.exec(command));
+			return doit((p = runtime_.exec(command)));
 		} catch (Exception e) {
 			return Left.left(e);
+		} finally {
+			after(p);
 		}
 	}
 	
 	public final Either<Exception,T> exec(final String[] cmdArray) {
+		Process p = null;
 		try {
-			return doit(runtime_.exec(cmdArray));
+			return doit((p = runtime_.exec(cmdArray)));
 		} catch (Exception e) {
 			return Left.left(e);
+		} finally {
+			after(p);
 		}
 	}
 	
 	public final Either<Exception,T> exec(final String command,
 		final String[] envp) {
+		Process p = null;
 		try {
-			return doit(runtime_.exec(command, envp));
+			return doit((p = runtime_.exec(command, envp)));
 		} catch (Exception e) {
 			return Left.left(e);
+		} finally {
+			after(p);
 		}
 	}
 	
 	public final Either<Exception,T> exec(final String command,
 		final String[] envp, final File dir) {
+		Process p = null;
 		try {
-			return doit(runtime_.exec(command, envp, dir));
+			return doit((p = runtime_.exec(command, envp, dir)));
 		} catch (Exception e) {
 			return Left.left(e);
+		} finally {
+			after(p);
 		}
 	}
 	
 	public final Either<Exception,T> exec(final String[] cmdArray,
 		final String[] envp, final File dir) {
+		Process p = null;
 		try {
-			return doit(runtime_.exec(cmdArray, envp, dir));
+			return doit((p = runtime_.exec(cmdArray, envp, dir)));
 		} catch (Exception e) {
 			return Left.left(e);
+		} finally {
+			after(p);
 		}
 	}
 	
-	private final Either<Exception,T> doit(final Process p) {
+	private final Either<Exception,T> doit(final Process process) {
 		Either<Exception,T> result = null;
 		try {
-			result = Right.right(run(p));
-			success();
+			result = Right.right(run(process));
+			success(process);
 		} catch (Exception e) {
 			result = Left.left(e);
 		} finally {
-			if(p != null) {
-				closeQuietly(p.getInputStream());
-				closeQuietly(p.getOutputStream());
-				closeQuietly(p.getErrorStream());
+			if(process != null) {
+				closeQuietly(process.getInputStream());
+				closeQuietly(process.getOutputStream());
+				closeQuietly(process.getErrorStream());
 			}
 		}
 		return result;
