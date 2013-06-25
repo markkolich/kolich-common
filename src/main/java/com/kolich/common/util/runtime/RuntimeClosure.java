@@ -73,7 +73,7 @@ public abstract class RuntimeClosure<T> {
 	public final Either<Exception,T> exec(final String command) {
 		Process p = null;
 		try {
-			return doit((p = runtime_.exec(command)));
+			return doit(p = runtime_.exec(command));
 		} catch (Exception e) {
 			return Left.left(e);
 		} finally {
@@ -84,7 +84,7 @@ public abstract class RuntimeClosure<T> {
 	public final Either<Exception,T> exec(final String[] cmdArray) {
 		Process p = null;
 		try {
-			return doit((p = runtime_.exec(cmdArray)));
+			return doit(p = runtime_.exec(cmdArray));
 		} catch (Exception e) {
 			return Left.left(e);
 		} finally {
@@ -96,7 +96,7 @@ public abstract class RuntimeClosure<T> {
 		final String[] envp) {
 		Process p = null;
 		try {
-			return doit((p = runtime_.exec(command, envp)));
+			return doit(p = runtime_.exec(command, envp));
 		} catch (Exception e) {
 			return Left.left(e);
 		} finally {
@@ -108,7 +108,7 @@ public abstract class RuntimeClosure<T> {
 		final String[] envp, final File dir) {
 		Process p = null;
 		try {
-			return doit((p = runtime_.exec(command, envp, dir)));
+			return doit(p = runtime_.exec(command, envp, dir));
 		} catch (Exception e) {
 			return Left.left(e);
 		} finally {
@@ -120,7 +120,7 @@ public abstract class RuntimeClosure<T> {
 		final String[] envp, final File dir) {
 		Process p = null;
 		try {
-			return doit((p = runtime_.exec(cmdArray, envp, dir)));
+			return doit(p = runtime_.exec(cmdArray, envp, dir));
 		} catch (Exception e) {
 			return Left.left(e);
 		} finally {
