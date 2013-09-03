@@ -33,7 +33,6 @@ object Dependencies {
 
   private val slf4j = "org.slf4j" % "slf4j-api" % "1.7.2" % "compile"
 
-  private val gson = "com.google.code.gson" % "gson" % "2.2.4" % "compile"
   private val guava = "com.google.guava" % "guava" % "14.0.1" % "compile"
 
   private val commonsIo = "commons-io" % "commons-io" % "2.4" % "compile"
@@ -41,7 +40,7 @@ object Dependencies {
 
   val commonDeps = Seq(
     slf4j,
-    gson, guava,
+    guava,
     commonsIo, commonsCodec)
 
 }
@@ -51,7 +50,7 @@ object Common extends Build {
   import Dependencies._
 
   private val aName = "kolich-common"
-  private val aVer = "0.1.0"
+  private val aVer = "1.0"
   private val aOrg = "com.kolich"
 
   lazy val common: Project = Project(
