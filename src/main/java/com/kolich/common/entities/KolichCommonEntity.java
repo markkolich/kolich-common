@@ -26,17 +26,51 @@
 
 package com.kolich.common.entities;
 
-public interface KolichCommonEntity {
+import static org.apache.commons.codec.binary.StringUtils.getBytesUtf8;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+public abstract class KolichCommonEntity {
 	
-	public byte[] getBytes();
+	private static GsonBuilder builder__ = null;
+	
+	/**
+	 * Get a fresh {@link Gson} instance created using the default
+	 * {@link GsonBuilder}.
+	 */
+	public synchronized static final Gson getDefaultGsonInstance() {
+		if (builder__ == null) {
+			builder__ = getDefaultGsonBuilder();
+		}
+		return builder__.create();
+	}
+	
+	/**
+	 * Get a new, default configured, {@link GsonBuilder} instance.
+	 * Pretty printing is disabled, null's are serialized.
+	 * @return
+	 */
+	public static final GsonBuilder getDefaultGsonBuilder() {
+		return new GsonBuilder().serializeNulls();
+	}
+	
+	/**
+	 * Returns the entity in its default JSON object representation
+	 * as a series of UTF-8 encoded bytes.
+	 * @return
+	 */
+	public byte[] getBytes() {
+		return getBytesUtf8(toString());
+	}
 	
 	@Override
-	public String toString();
+	public abstract String toString();
 	
 	@Override
-	public int hashCode();
+	public abstract int hashCode();
 	
 	@Override
-	public boolean equals(Object o);
+	public abstract boolean equals(Object o);
 
 }
