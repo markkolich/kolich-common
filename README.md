@@ -4,7 +4,7 @@ My core common Java classes packaged up into a nice lil artifact.
 
 ## Latest Version
 
-The latest stable version of this library is <a href="http://markkolich.github.com/repo/com/kolich/kolich-common/0.1.0">0.1.0</a>.
+The latest stable version of this library is <a href="http://markkolich.github.com/repo/com/kolich/kolich-common/0.1.1">0.1.1</a>.
 
 ## Resolvers
 
@@ -15,7 +15,7 @@ If you wish to use this artifact, you can easily add it to your existing Maven o
 ```scala
 resolvers += "Kolich repo" at "http://markkolich.github.com/repo"
 
-val kolichCommon = "com.kolich" % "kolich-common" % "0.1.0" % "compile"
+val kolichCommon = "com.kolich" % "kolich-common" % "0.1.1" % "compile"
 ```
 
 ### Maven
@@ -31,7 +31,7 @@ val kolichCommon = "com.kolich" % "kolich-common" % "0.1.0" % "compile"
 <dependency>
   <groupId>com.kolich</groupId>
   <artifactId>kolich-common</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.1</version>
   <scope>compile</scope>
 </dependency>
 ```
