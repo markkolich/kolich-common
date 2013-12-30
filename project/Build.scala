@@ -27,14 +27,12 @@
 import sbt._
 import sbt.Keys._
 
-import com.typesafe.sbteclipse.plugin.EclipsePlugin._
-
 object Dependencies {
 
-  private val slf4j = "org.slf4j" % "slf4j-api" % "1.7.2" % "compile"
+  private val slf4j = "org.slf4j" % "slf4j-api" % "1.7.5" % "compile"
 
   private val gson = "com.google.code.gson" % "gson" % "2.2.4" % "compile"
-  private val guava = "com.google.guava" % "guava" % "14.0.1" % "compile"
+  private val guava = "com.google.guava" % "guava" % "15.0" % "compile"
 
   private val commonsIo = "commons-io" % "commons-io" % "2.4" % "compile"
   private val commonsCodec = "commons-codec" % "commons-codec" % "1.6" % "compile"
@@ -51,7 +49,7 @@ object Common extends Build {
   import Dependencies._
 
   private val aName = "kolich-common"
-  private val aVer = "1.0"
+  private val aVer = "1.1"
   private val aOrg = "com.kolich"
 
   lazy val common: Project = Project(
@@ -123,12 +121,7 @@ object Common extends Build {
         file("dist") / "test" / defaultPath.getName
       },
       libraryDependencies ++= commonDeps,
-      retrieveManaged := true) ++
-      Seq(EclipseKeys.createSrc := EclipseCreateSrc.Default,
-        // Make sure SBT also fetches/loads the "src" (source) JAR's for
-        // all declared dependencies.
-        EclipseKeys.withSource := true,
-        // This is a Java project, only.
-        EclipseKeys.projectFlavor := EclipseProjectFlavor.Java))
+      retrieveManaged := true)
+  )
 
 }
