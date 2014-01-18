@@ -26,11 +26,7 @@
 
 package com.kolich.common.util.secure;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-import static java.lang.Long.MAX_VALUE;
-import static java.security.MessageDigest.getInstance;
-import static org.apache.commons.codec.binary.Hex.encodeHex;
-import static org.apache.commons.codec.binary.StringUtils.getBytesUtf8;
+import com.kolich.common.KolichCommonException;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -38,9 +34,16 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.kolich.common.KolichCommonException;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.Long.MAX_VALUE;
+import static java.security.MessageDigest.getInstance;
+import static org.apache.commons.codec.binary.Hex.encodeHex;
+import static org.apache.commons.codec.binary.StringUtils.getBytesUtf8;
 
 public final class KolichChecksum {
+
+    // Cannot instantiate.
+    private KolichChecksum() {}
 	
 	public static final String getSHA256Hash(final String input) {
 		checkNotNull(input, "Input string to hash cannot be null.");
@@ -62,7 +65,7 @@ public final class KolichChecksum {
 		final long maxSize) {
 		checkNotNull(input, "Input byte[] array to hash cannot be null.");
 		return getSHA256HashAndCopy(new ByteArrayInputStream(input), null,
-			maxSize);
+                maxSize);
 	}
 	
 	public static final String getSHA256HashAndCopy(final InputStream is,
@@ -84,11 +87,11 @@ public final class KolichChecksum {
 		checkNotNull(input, "Input string to hash cannot be null.");
 		return getSHA1Hash(getBytesUtf8(input));
 	}
-	
+
 	public static final String getSHA1Hash(final String input,
 		final long maxSize) {
 		checkNotNull(input, "Input string to hash cannot be null.");
-		return getSHA1Hash(getBytesUtf8(input), MAX_VALUE);
+		return getSHA1Hash(getBytesUtf8(input), maxSize);
 	}
 	
 	public static final String getSHA1Hash(final byte[] input) {
@@ -111,7 +114,6 @@ public final class KolichChecksum {
 	public static final String getSHA1HashAndCopy(final InputStream is,
 		final OutputStream os, final long maxSize) {
 		checkNotNull(is, "Input stream to hash and copy cannot be null.");
-		checkNotNull(os, "Output stream to copy to cannot be null.");
 		try {
 			return getHashAndCopy(is, maxSize, new SHA1StreamCopier(), os);
 		} catch (NoSuchAlgorithmException e) {
@@ -192,11 +194,13 @@ public final class KolichChecksum {
 		    			"allowed (read=" + totalRead + ", max=" + maxSize +
 		    			")");
 		    	}
-		    	for(final HavaloStreamCopier copier : copiers) {
-		    		if(copier != null) {
-		    			copier.write(buffer, read);
-		    		}
-		    	}
+                if(copiers != null) {
+                    for(final HavaloStreamCopier copier : copiers) {
+                        if(copier != null) {
+                            copier.write(buffer, read);
+                        }
+                    }
+                }
 		    }
 		} catch (KolichChecksumException e) {
 			throw e;
@@ -220,7 +224,7 @@ public final class KolichChecksum {
 	
 	private static final class SHA256StreamCopier extends HavaloHashStreamCopier {
 		private static final String ALGO_SHA_256 = "SHA-256";
-		private MessageDigest md_;
+		private final MessageDigest md_;
 		public SHA256StreamCopier() throws NoSuchAlgorithmException {
 			md_ = getInstance(ALGO_SHA_256);
 		}
@@ -236,7 +240,7 @@ public final class KolichChecksum {
 	
 	private static final class SHA1StreamCopier extends HavaloHashStreamCopier {
 		private static final String ALGO_SHA_1 = "SHA-1";
-		private MessageDigest md_;
+		private final MessageDigest md_;
 		public SHA1StreamCopier() throws NoSuchAlgorithmException {
 			md_ = getInstance(ALGO_SHA_1);
 		}
@@ -252,7 +256,7 @@ public final class KolichChecksum {
 	
 	private static final class MD5StreamCopier extends HavaloHashStreamCopier {
 		private static final String ALGO_MD5 = "MD5";
-		private MessageDigest md_;
+		private final MessageDigest md_;
 		public MD5StreamCopier() throws NoSuchAlgorithmException {
 			md_ = getInstance(ALGO_MD5);
 		}
@@ -267,7 +271,7 @@ public final class KolichChecksum {
 	}
 	
 	private static final class OutputStreamCopier extends HavaloStreamCopier {		
-		private OutputStream os_;		
+		private final OutputStream os_;
 		public OutputStreamCopier(OutputStream os) {
 			os_ = os;
 		}

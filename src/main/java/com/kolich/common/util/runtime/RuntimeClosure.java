@@ -26,13 +26,13 @@
 
 package com.kolich.common.util.runtime;
 
-import static org.apache.commons.io.IOUtils.closeQuietly;
-
-import java.io.File;
-
 import com.kolich.common.functional.either.Either;
 import com.kolich.common.functional.either.Left;
 import com.kolich.common.functional.either.Right;
+
+import java.io.File;
+
+import static org.apache.commons.io.IOUtils.closeQuietly;
 
 public abstract class RuntimeClosure<T> {
 	
