@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013 Mark S. Kolich
+ * Copyright (c) 2015 Mark S. Kolich
  * http://mark.koli.ch
  *
  * Permission is hereby granted, free of charge, to any person
@@ -31,8 +31,8 @@ object Dependencies {
 
   private val slf4j = "org.slf4j" % "slf4j-api" % "1.7.5" % "compile"
 
-  private val gson = "com.google.code.gson" % "gson" % "2.2.4" % "compile"
-  private val guava = "com.google.guava" % "guava" % "16.0" % "compile"
+  private val gson = "com.google.code.gson" % "gson" % "2.3.1" % "compile"
+  private val guava = "com.google.guava" % "guava" % "18.0" % "compile"
 
   private val commonsIo = "commons-io" % "commons-io" % "2.4" % "compile"
   private val commonsCodec = "commons-codec" % "commons-codec" % "1.9" % "compile"
@@ -49,13 +49,13 @@ object Common extends Build {
   import Dependencies._
 
   private val aName = "kolich-common"
-  private val aVer = "0.2"
+  private val aVer = "0.3"
   private val aOrg = "com.kolich"
 
   lazy val common: Project = Project(
     aName,
     new File("."),
-    settings = Defaults.defaultSettings ++ Seq(
+    settings = Defaults.coreDefaultSettings ++ Seq(
       version := aVer,
       organization := aOrg,
       scalaVersion := "2.10.1",
