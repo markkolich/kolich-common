@@ -31,6 +31,7 @@ import java.util.Iterator;
 
 import com.kolich.common.functional.KolichFunctionalException;
 
+@Deprecated
 public final class None<T> extends Option<T> {
 
 	private None() {}

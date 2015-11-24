@@ -4,19 +4,11 @@ My core common Java classes packaged up into a nice lil artifact.
 
 ## Latest Version
 
-The latest stable version of this library is <a href="http://markkolich.github.com/repo/com/kolich/kolich-common/0.3">0.3</a>.
+See the <a href="https://github.com/markkolich/kolich-common/releases">Releases</a> page for the latest version.
 
 ## Resolvers
 
-If you wish to use this artifact, you can easily add it to your existing Maven or SBT project using <a href="https://github.com/markkolich/markkolich.github.com#marks-maven2-repository">my GitHub hosted Maven2 repository</a>.
-
-### SBT
-
-```scala
-resolvers += "Kolich repo" at "http://markkolich.github.com/repo"
-
-val kolichCommon = "com.kolich" % "kolich-common" % "0.3" % "compile"
-```
+If you wish to use this artifact, you can easily add it to your existing Maven project using <a href="https://github.com/markkolich/markkolich.github.com#marks-maven2-repository">my GitHub hosted Maven2 repository</a>.
 
 ### Maven
 
@@ -31,9 +23,15 @@ val kolichCommon = "com.kolich" % "kolich-common" % "0.3" % "compile"
 <dependency>
   <groupId>com.kolich</groupId>
   <artifactId>kolich-common</artifactId>
-  <version>0.3</version>
+  <version>0.4</version>
   <scope>compile</scope>
 </dependency>
+```
+
+### Gradle
+
+```groovy
+compile 'com.kolich:kolich-common:0.4'
 ```
 
 ## Licensing

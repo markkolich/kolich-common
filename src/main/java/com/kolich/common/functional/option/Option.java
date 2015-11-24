@@ -26,6 +26,7 @@
 
 package com.kolich.common.functional.option;
 
+@Deprecated
 public abstract class Option<T> implements Iterable<T> {
 	
 	public abstract boolean isSome();

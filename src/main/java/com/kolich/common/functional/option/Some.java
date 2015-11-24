@@ -29,6 +29,7 @@ package com.kolich.common.functional.option;
 import java.util.Collections;
 import java.util.Iterator;
 
+@Deprecated
 public final class Some<T> extends Option<T> {
 	
 	private final T some_;
