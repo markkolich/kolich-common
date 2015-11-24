@@ -28,6 +28,7 @@ package com.kolich.common.functional.option;
 
 import com.kolich.common.functional.KolichFunctionalException;
 
+@SuppressWarnings("deprecation")
 public final class OptionExample {
 
 	public static void main(String[] args) {
